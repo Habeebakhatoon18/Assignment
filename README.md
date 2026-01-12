@@ -31,7 +31,7 @@ This project is a modern e-commerce platform that allows users to browse product
 
 ```
 Assignment/
-├── Backend/
+├── server/
 │   ├── config/
 │   │   ├── mongo-connect.js      # MongoDB connection
 │   │   ├── multer-config.js      # File upload configuration
@@ -93,7 +93,7 @@ Assignment/
 
 1. **Navigate to backend directory:**
 ```bash
-cd Backend
+cd server
 ```
 
 2. **Install dependencies:**
