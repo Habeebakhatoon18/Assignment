@@ -1,0 +1,455 @@
+{
+	"info": {
+		"_postman_id": "primetrade-api-collection",
+		"name": "PrimeTrade E-Commerce API",
+		"description": "Complete API collection for PrimeTrade e-commerce application. Includes authentication, product management, and cart operations.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication - Users",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "register"]
+						},
+						"description": "Register a new user account. Returns JWT token in cookie."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/users/register",
+									"host": ["{{base_url}}"],
+									"path": ["api", "users", "register"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n  \"success\": true,\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"user\": {\n    \"_id\": \"507f1f77bcf86cd799439011\",\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"cart\": []\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "login"]
+						},
+						"description": "Login user with email and password. Returns JWT token in cookie."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "me"]
+						},
+						"description": "Get current authenticated user profile. Requires user authentication cookie."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "logout"]
+						},
+						"description": "Logout user and clear authentication cookie."
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication endpoints"
+		},
+		{
+			"name": "Authentication - Admin",
+			"item": [
+				{
+					"name": "Create Admin (Production Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/create",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "create"]
+						},
+						"description": "Create admin account. **ONLY WORKS IN PRODUCTION MODE** (NODE_ENV=production). Returns 403 Forbidden in development."
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "login"]
+						},
+						"description": "Login admin with email and password. Returns JWT token in cookie."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout Admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "logout"]
+						},
+						"description": "Logout admin and clear authentication cookie."
+					},
+					"response": []
+				}
+			],
+			"description": "Admin authentication endpoints"
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/products",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products"]
+						},
+						"description": "Get all products. Public endpoint, no authentication required. Returns products with base64 encoded images."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/products",
+									"host": ["{{base_url}}"],
+									"path": ["api", "products"]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n  \"success\": true,\n  \"products\": [\n    {\n      \"_id\": \"507f1f77bcf86cd799439011\",\n      \"name\": \"Product Name\",\n      \"price\": 99.99,\n      \"discount\": 10,\n      \"imageBase64\": \"iVBORw0KGgoAAAANSUhEUgAA...\",\n      \"createdAt\": \"2024-01-01T00:00:00.000Z\",\n      \"updatedAt\": \"2024-01-01T00:00:00.000Z\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "New Product",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "99.99",
+									"type": "text"
+								},
+								{
+									"key": "discount",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/products/create",
+							"host": ["{{base_url}}"],
+							"path": ["api", "products", "create"]
+						},
+						"description": "Create a new product. **Admin only**. Requires admin authentication cookie. Use form-data with image file."
+					},
+					"response": []
+				}
+			],
+			"description": "Product management endpoints"
+		},
+		{
+			"name": "Admin - Product Management",
+			"item": [
+				{
+					"name": "Get All Products (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin"]
+						},
+						"description": "Get all products for admin panel. **Admin only**. Requires admin authentication cookie."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Updated Product Name",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "149.99",
+									"type": "text"
+								},
+								{
+									"key": "discount",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": [],
+									"description": "Optional - leave empty to keep current image"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/updateProduct/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "updateProduct", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "507f1f77bcf86cd799439011",
+									"description": "Product ID"
+								}
+							]
+						},
+						"description": "Update a product. **Admin only**. Requires admin authentication cookie. Image is optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/admin/deleteProduct/:id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "admin", "deleteProduct", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "507f1f77bcf86cd799439011",
+									"description": "Product ID"
+								}
+							]
+						},
+						"description": "Delete a product. **Admin only**. Requires admin authentication cookie."
+					},
+					"response": []
+				}
+			],
+			"description": "Admin product management endpoints"
+		},
+		{
+			"name": "Shop & Cart",
+			"item": [
+				{
+					"name": "Get Shop Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/shop",
+							"host": ["{{base_url}}"],
+							"path": ["api", "shop"]
+						},
+						"description": "Get shop products. **Protected** - Requires user or admin authentication cookie."
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart/add/:product_id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "cart", "add", ":product_id"],
+							"variable": [
+								{
+									"key": "product_id",
+									"value": "507f1f77bcf86cd799439011",
+									"description": "Product ID to add to cart"
+								}
+							]
+						},
+						"description": "Add product to user's cart. **User only** - Requires user authentication cookie. Admins cannot add to cart."
+					},
+					"response": []
+				},
+				{
+					"name": "Remove from Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/cart/remove/:product_id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "cart", "remove", ":product_id"],
+							"variable": [
+								{
+									"key": "product_id",
+									"value": "507f1f77bcf86cd799439011",
+									"description": "Product ID to remove from cart"
+								}
+							]
+						},
+						"description": "Remove product from user's cart. **User only** - Requires user authentication cookie."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/users/cart",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "cart"]
+						},
+						"description": "Get user's cart items. **User only** - Requires user authentication cookie."
+					},
+					"response": []
+				}
+			],
+			"description": "Shop and cart operations"
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "API Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": ["{{base_url}}"],
+							"path": [""]
+						},
+						"description": "Check if API is running"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
